@@ -1,8 +1,10 @@
 const { PORT } = require("./src/config/env");
 const express = require("express");
 const app = express();
+const router = require("./src/routes/routes");
 app.use(express.json());
 
+app.use("/tasks", router);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
