@@ -17,10 +17,11 @@ const handleCreatingATask = async (req, res, next) => {
 
 const handleFindAllTasks = async (req, res, next) => {
   try {
-    const tasks = await taskService.findAllTasks();
+    const result = await taskService.findAllTasks(req.query);
+
     return res.status(200).json({
       success: true,
-      data: tasks,
+      ...result,
     });
   } catch (error) {
     next(error);

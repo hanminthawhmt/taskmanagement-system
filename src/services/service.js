@@ -13,8 +13,36 @@ const createATask = async (data) => {
   return task;
 };
 
-const findAllTasks = async () => {
-  return await taskRepository.getAllTask();
+const findAllTasks = async (filters = {}) => {
+  const page = Math.max(1, parseInt(filters.page) || 1);
+  const limit = Math.min(100, parseInt(filters.limit) || 20);
+
+  const toArray = (val) => {
+    if (!val) return undefined;
+    const arr = Array.isArray(val) ? val : val.split(",").map((s) => s.trim());
+    return arr.length ? arr : undefined;
+  };
+
+  const params = {
+    search: filters.search?.trim() || undefined,
+    status: toArray(filters.status),
+    priority: toArray(filters.priority),
+    tags: toArray(filters.tags),
+    page,
+    limit,
+  };
+
+  const { rows, total } = await taskRepository.getAllTask(params);
+
+  return {
+    data: rows,
+    pagination: {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    },
+  };
 };
 
 const findATaskById = async (id) => {

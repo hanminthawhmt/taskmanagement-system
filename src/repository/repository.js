@@ -23,12 +23,53 @@ const createATask = async (
   return rows[0];
 };
 
-const getAllTask = async () => {
-  const query = `
+const getAllTask = async ({ search, status, priority, tags, page, limit }) => {
+  const conditions = [];
+  const values = [];
+  let idx = 1;
+
+  if (search) {
+    conditions.push(`(title ILIKE $${idx} OR description ILIKE $${idx})`);
+    values.push(`%${search}%`);
+    idx++;
+  }
+
+  if (status?.length) {
+    conditions.push(`status = ANY($${idx}::task_status[])`);
+    values.push(status);
+    idx++;
+  }
+
+  if (priority?.length) {
+    conditions.push(`priority = ANY($${idx}::task_priority[])`);
+    values.push(priority);
+    idx++;
+  }
+
+  if (tags?.length) {
+    conditions.push(`tags && $${idx}::varchar[]`);
+    values.push(tags);
+    idx++;
+  }
+
+  const where = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
+
+  const offset = (page - 1) * limit;
+
+  const dataQuery = `
     SELECT * FROM tasks
-    `;
-  const { rows } = await db.query(query);
-  return rows;
+    ${where}
+    ORDER BY created_at DESC
+    LIMIT $${idx} OFFSET $${idx + 1}
+  `;
+  const countQuery = `SELECT COUNT(*) FROM tasks ${where}`;
+
+  const [{ rows }, { rows: countRows }] = await Promise.all([
+    db.query(dataQuery, [...values, limit, offset]),
+    db.query(countQuery, values),
+  ]);
+
+  return { rows, total: parseInt(countRows[0].count, 10) };
 };
 
 const getATaskById = async (id) => {
