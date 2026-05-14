@@ -100,7 +100,11 @@ npm start
 ### 6. Open the app
 
 Visit **http://localhost:3000** in your browser.
-
+| Page | URL |
+|---|---|
+| Task List | http://localhost:3000/index.html |
+| Create Task | http://localhost:3000/form.html |
+| Edit Task | http://localhost:3000/form.html?id=:id |
 ---
 
 ## API Endpoints
