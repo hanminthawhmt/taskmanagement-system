@@ -1,4 +1,4 @@
-# Task Management System MVP
+# Task Management System (MVP Features)
 
 ## Tech Stack & Reasoning
 
