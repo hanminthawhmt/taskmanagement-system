@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TaskFlow — Task Form</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="form-shell">
+      <!-- Back link -->
+      <a class="form-back" href="index.html">
+        <i class="ti ti-arrow-left"></i>
+        Back to Tasks
+      </a>
+
+      <div class="form-card">
+        <h1 class="form-heading" id="form-title">New Task</h1>
+        <p class="form-subheading" id="form-subtitle">
+          Fill in the details to create a new task.
+        </p>
+
+        <form id="task-form" novalidate>
+          <div class="form-grid">
+            <!-- Title -->
+            <div class="form-group full">
+              <label for="field-title"
+                >Title <span class="required-star">*</span></label
+              >
+              <input
+                type="text"
+                id="field-title"
+                placeholder="e.g. Set up CI/CD pipeline"
+                autocomplete="off"
+              />
+              <span class="field-error" id="title-error"></span>
+            </div>
+
+            <!-- Description -->
+            <div class="form-group full">
+              <label for="field-description">Description</label>
+              <textarea
+                id="field-description"
+                placeholder="Describe what needs to be done…"
+              ></textarea>
+            </div>
+
+            <!-- Status -->
+            <div class="form-group">
+              <label for="field-status">Status</label>
+              <select id="field-status" class="form-select">
+                <option value="todo">To Do</option>
+                <option value="in_progress">In Progress</option>
+                <option value="done">Done</option>
+              </select>
+            </div>
+
+            <!-- Priority -->
+            <div class="form-group">
+              <label for="field-priority">Priority</label>
+              <select id="field-priority" class="form-select">
+                <option value="low">Low</option>
+                <option value="medium" selected>Medium</option>
+                <option value="high">High</option>
+              </select>
+            </div>
+
+            <!-- Due Date -->
+            <div class="form-group">
+              <label for="field-due-date">Due Date</label>
+              <input type="date" id="field-due-date" />
+            </div>
+
+            <!-- Tags -->
+            <div class="form-group">
+              <label
+                >Tags
+                <span style="color: var(--text3); font-weight: 400"
+                  >(max 5)</span
+                ></label
+              >
+              <div class="tags-input-wrap" id="tags-input-wrap">
+                <input
+                  type="text"
+                  id="tags-real-input"
+                  class="tags-text-input"
+                  placeholder="Type and press Enter…"
+                  autocomplete="off"
+                />
+              </div>
+              <input type="hidden" id="tags-hidden" />
+              <span class="tags-hint">Press Enter or comma to add a tag</span>
+              <span class="field-error" id="tags-error"></span>
+            </div>
+          </div>
+          <!-- /form-grid -->
+
+          <div class="form-footer">
+            <a href="index.html" class="btn btn-ghost">Cancel</a>
+            <button type="submit" class="btn btn-primary" id="submit-btn">
+              <i class="ti ti-check"></i>
+              Create Task
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Toasts -->
+    <div class="toast-wrap" id="toast-wrap"></div>
+
+    <script src="api.js"></script>
+    <script src="form.js"></script>
+  </body>
+</html>
